@@ -34,4 +34,4 @@ Updated: 2nd September 2010 by Andrew Lindsay based on changes supplied
 by jmccrohan to add extra characters to big_font
 
 Updated: 19th December 2012 by JbLb (https://github.com/jblb)
-allowing LCD_DC to reside on any port
+	allowing LCD_DC to reside on any port
