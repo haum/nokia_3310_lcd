@@ -34,6 +34,10 @@
  * by jmccrohan to add extra characters to big_font
  *
  * Updated: 11/12/2011, Andrew Lindsay. Updates for Arduino 1.0 compatibility
+ * 
+ * update 19/12/12, jblb.
+ * 		allowing LCD_DC to reside on any port
+ * 
  */
 
 #include <avr/pgmspace.h>
@@ -47,9 +51,11 @@
 #define SPI_INIT		SPCR = 0x51
 //#define LCDENABLE		SPI_INIT; SPI_CS_PORT &= ~(1<<SPI_CS)	// Enable LCD
 #define LCDENABLE		SPI_CS_PORT &= ~(1<<SPI_CS)	// Enable LCD
-#define LCDDISABLE	SPI_CS_PORT |= (1<<SPI_CS)	// disable LCD
-#define LCDCMDMODE	PORTB &= ~(1<<LCD_DC)	// Set LCD in command mode
-#define LCDDATAMODE	PORTB |= (1<<LCD_DC)	// Set LCD to Data mode
+#define LCDDISABLE		SPI_CS_PORT |= (1<<SPI_CS)	// disable LCD
+//#define LCDCMDMODE	PORTB &= ~(1<<LCD_DC)	// Set LCD in command mode
+#define LCDCMDMODE 		LCD_DC_PORT &= ~(1<<LCD_DC)	// Set LCD in command mode
+//#define LCDDATAMODE	PORTB |= (1<<LCD_DC)	// Set LCD to Data mode
+#define LCDDATAMODE		LCD_DC_PORT |= (1<<LCD_DC)	// Set LCD to Data mode
 
 #define LCDCOLMAX	84
 #define LCDROWMAX	6
@@ -75,8 +81,9 @@ Nokia_3310_lcd::Nokia_3310_lcd() {
  * Return value : None 
  */
 void Nokia_3310_lcd::init(void){
-    DDRB |= (1<<LCD_DC)|(1<<LCD_RST)|(1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
+    DDRB |= (1<<LCD_RST)|(1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
     DDRD |= (1<<LCD_BL);
+    LCD_DC_DDR |= (1<<LCD_DC); 
     SPI_CS_DDR |= (1<<SPI_CS);
     //
     // even if we don't use SPI_SS for enabling the SPI device it must be high whilst

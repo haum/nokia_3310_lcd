@@ -2,6 +2,8 @@
 *	nokia_3310_lcd.h
 */
 
+#define _NANODE_3310 //use NANODE pin def for lcd
+
 #ifndef _NOKIA_3310_LCD_H
 #define _NOKIA_3310_LCD_H
 
@@ -24,22 +26,33 @@
 #undef USE_JOYSTICK
 
 // Define SPI port
-#define LCD_RST PORTB1
+#define LCD_RST PORTB1			// lcd RST
 #define SPI_SS  PORTB2	// must be high whilst SPCR is set.
+#define SPI_MOSI PORTB3		// lcd DIN
+#define SPI_SCK PORTB5		// lcd SCL
+	
 
-// Default CS for nuelectronics shield
-#define SPI_CS  PORTB2
-#define SPI_CS_PORT  PORTB
-#define SPI_CS_DDR  DDRB
-// Alternative Digital Pin 6 if you want to modify shield to use Ethernet at same time
-//#define SPI_CS  PORTD6
-//#define SPI_CS_PORT  PORTD
-//#define SPI_CS_DDR  DDRD
+#ifdef _NUELEC
+	// Default CS for nuelectronics shield
+	#define SPI_CS  PORTB2		// lcd CS
+	#define SPI_CS_PORT  PORTB
+	#define SPI_CS_DDR  DDRB
+	#define LCD_DC  PORTB0		// lcd DC
+	#define LCD_DC_PORT	PORTB	//
+	#define LCD_DC_DDR	DDRB	//
+	#define LCD_BL  PORTD7		// Backlight control
+#endif
+#ifdef _NANODE_3310
+// Alternative Digital Pin 4 to use Ethernet at same time
+	#define SPI_CS  PORTD4		// lcd CS
+	#define SPI_CS_PORT  PORTD
+	#define SPI_CS_DDR  DDRD
+	#define LCD_DC 	PORTD5		// lcd DC
+	#define LCD_DC_PORT	PORTD	//
+	#define LCD_DC_DDR	DDRD	//
+	#define LCD_BL  PORTD6		// Backlight control
+#endif
 
-#define SPI_MOSI PORTB3
-#define SPI_SCK PORTB5
-#define LCD_DC  PORTB0
-#define LCD_BL  PORTD7		// Backlight control
 
 //display mode -- normal / highlight
 #define MENU_NORMAL	0
